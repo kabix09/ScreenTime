@@ -1,0 +1,7 @@
+sonata_block:
+    http_cache: false
+
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts: [admin]
