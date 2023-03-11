@@ -16,11 +16,36 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
+            OAuth2:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                type: attribute                     # https://github.com/symfony/maker-bundle/issues/1152
+                dir: '%kernel.project_dir%/src/OAuth2/Entity'
+                prefix: 'App\OAuth2\Entity'
+                alias: OAuth2
+            Actor:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Actor/Entity'
+                prefix: 'App\Actor\Entity'
+                alias: Actor
+            Character:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Character/Entity'
+                prefix: 'App\Character\Entity'
+                alias: Character
+            Movie:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Movie/Entity'
+                prefix: 'App\Movie\Entity'
+                alias: Movie
+            Country:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Country/Entity'
+                prefix: 'App\Country\Entity'
+                alias: Country
 
 when@test:
     doctrine:
