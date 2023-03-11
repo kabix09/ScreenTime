@@ -1,0 +1,33 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{%- block field_value %}
+    <div class="col-md-10 box-body table-responsive no-padding" style="margin: 15px;">
+        <table class="table">
+            <tbody>
+            {% for character in value %}
+            <tr class="sonata-ba-view-container">
+                <td style="width: 5%">
+                    <span>{{ loop.index }}</span>
+                </td>
+
+                <td>
+                    <span>
+                        <a class="sonata-link-identifier" href="{{ path('admin_app_character_character_show', {'id': character.id}) }}">
+                            {{ character.roleName }}
+                        </a>
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{#    <ul style="list-style-type: none; padding: 0; margin: 0;">#}
+{#        {% for character in value %}#}
+{#            <li>#}
+{#                <span style="font-weight: 600">{{ character.roleName }}</span>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{% endblock -%}
