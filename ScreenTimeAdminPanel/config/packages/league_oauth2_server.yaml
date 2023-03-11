@@ -1,0 +1,23 @@
+league_oauth2_server:
+    authorization_server:
+        private_key: '%env(resolve:OAUTH_PRIVATE_KEY)%'
+        private_key_passphrase: '%env(resolve:OAUTH_PASSPHRASE)%'
+        encryption_key: '%env(resolve:OAUTH_ENCRYPTION_KEY)%'
+    resource_server:
+        public_key: '%env(resolve:OAUTH_PUBLIC_KEY)%'
+    scopes:
+        available: [default]
+        default: [default]
+    persistence:
+        doctrine:
+            entity_manager:     default
+
+    client:
+        # Set a custom client class. Must be a League\Bundle\OAuth2ServerBundle\Model\AbstractClient
+        #League\Bundle\OAuth2ServerBundle\Model\Client
+        classname: League\Bundle\OAuth2ServerBundle\Model\Client #'%league.oauth2_server.client.classname%'
+
+when@test:
+    league_oauth2_server:
+        persistence:
+            in_memory: null

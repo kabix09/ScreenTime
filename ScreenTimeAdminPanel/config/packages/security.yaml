@@ -6,6 +6,15 @@ security:
     providers:
         users_in_memory: { memory: null }
     firewalls:
+        #firewalls according to oauth2-server-bundle docs https://github.com/thephpleague/oauth2-server-bundle/blob/master/docs/basic-setup.md
+        api_token:
+            pattern: ^/api/token$
+            security: false
+        api:
+            pattern: ^/api
+            security: true
+            stateless: true
+            oauth2: true
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false

@@ -1,0 +1,27 @@
+###
+
+POST {{host}}/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{oauth2_client_identifier}}&client_secret={{oauth2_client_secret}}&scope=default
+
+###
+
+# Example response
+#
+#   HTTP/1.1 200 OK
+#   Cache-Control: no-store, private
+#   Content-Type: application/json; charset=UTF-8
+#   Date: Mon, 13 Feb 2023 21:57:23 GMT
+#   Pragma: no-cache
+#   X-Debug-Token: c19fc6
+#   X-Debug-Token-Link: https://localhost:8000/_profiler/c19fc6
+#   X-Powered-By: PHP/8.1.5
+#   X-Robots-Tag: noindex
+#   Content-Length: 725
+#
+#   {
+#     "token_type": "Bearer",
+#     "expires_in": 3600,
+#     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJpZGVudGlmaWVyX2FiYyIsImp0aSI6IjY2N2Y1NzgzZWRjZjRmNzQxNDdjYmE1MTEzYWE2MzlhNGI5N2RmOWRlYmE2MDIzMTExZmZjZWU0MGVkODI0NTYxOWRhYWEwMGNjMWVhYTY3IiwiaWF0IjoxNjc2MzI1NDQyLjg4Njc5NywibmJmIjoxNjc2MzI1NDQyLjg4NjgxLCJleHAiOjE2NzYzMjkwNDIuNDQwMzIyLCJzdWIiOiIiLCJzY29wZXMiOlsiZGVmYXVsdCJdfQ.EgOj49GUKGTnjFF7za8vdQI42k-esa51o6fk75D1JTPcQCTR5EiTwmjt-3rlK37yVT72sQ-YPsrA_80m_Vp-NjH1oziPssQhzKMab4QdX43E1H4FjHJR_7QNIdDkMe-NRxPQj4y2L6JF5cJOOw1JIEwvAYrjnLcn_OMz2qj1qpkOSnCQJ3lhl21HUy_9Mn5cbHRKgsj5c3K5qBG_-igpFvtFVmJxhzi0TsSOJQYiqMWLgec3tlVSx7kvLEQi-n0KAdl9CIfgCVsr2NR_vEST_2xS7EZT7bm-MzkfP6uwS-O2Ud5kuTXtyayKAqX75h71pJ6cAwXlDvYnQGvokl4m3Q"
+#   }
