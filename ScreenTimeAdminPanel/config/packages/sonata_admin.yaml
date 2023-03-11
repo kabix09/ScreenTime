@@ -1,10 +1,44 @@
+parameters:
+    #league.oauth2_server.client.classname: App\OAuth2\Entity\Client
+
 sonata_admin:
-    title: 'Sonata Admin'
+    title: '%env(string:PANEL_NAME)%'
     dashboard:
         blocks:
             - { type: sonata.admin.block.admin_list, position: left }
+        groups:
+            movie:
+                label: Movie
+                label_catalogue: knp_menu
+                icon: fa fa-camera
+                keep_open: true
+                items:
+                    - admin.actor
+                    - admin.character
+                    - admin.movie
+#            oauth2:
+#                label: oauth2
+#                label_catalogue: knp_menu
+#                icon: fa fa-user
+#                keep_open: true
+#                items:
+#                    - oauth2.admin.client
 
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+
+services:
+#    oauth2.admin.client:
+#        class: App\OAuth2\Admin\ClientAdmin
+#        arguments: [~, '%league.oauth2_server.client.classname%', ~]
+#        tags:
+#            - name: sonata.admin
+#              manager_type: orm
+#              label: OAuth2 #Clients
+#              label_translator_strategy: sonata.admin.label.strategy.underscore
+#        calls:
+#            - [setEventDispatcher, ['@event_dispatcher']]
+#            - [setTemplate, ['list', 'admin/oauth2/client/list.html.twig']]
+#            - [setTranslationDomain, [oauth2_client]]

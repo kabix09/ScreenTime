@@ -1,0 +1,49 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{%- block field_value %}
+{#    {{  dump(value) }}#}
+    {% set timeSum = 0 %}
+
+    <div class="col-md-10 box-body table-responsive no-padding" style="margin: 15px;">
+        <table class="table">
+            <thead>
+                <th>Index</th>
+                <th>Movie</th>
+                <th style="width: 25%">Time on scene</th>
+            </thead>
+            <tbody>
+            {% for movieCharacterBucket in value %}
+
+                {% set timeSum = timeSum + movieCharacterBucket.timeOnScene %}
+
+                {% set movie = movieCharacterBucket.movie %}
+
+                <tr class="sonata-ba-view-container">
+                    <td style="width: 5%">
+                        <span>{{ loop.index }}</span>
+                    </td>
+
+                    <td>
+                    <span>
+                        <a class="sonata-link-identifier" href="{{ path('admin_app_movie_movie_show', {'id': movie.id}) }}">
+                            {{ movie.title }} ({{ movie.productionYear|date('Y') }})
+                        </a>
+                    </span>
+                    </td>
+
+                    <td>
+                        {{ movieCharacterBucket.timeOnScene }} min
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th id="total" colspan="2">Total:</th>
+                    <td>{{ timeSum }} min</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+{% endblock -%}

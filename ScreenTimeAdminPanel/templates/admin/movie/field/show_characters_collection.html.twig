@@ -1,0 +1,71 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{%- block field_value %}
+
+    {% set timeSum = 0 %}
+
+    <div class="col-md-10 box-body table-responsive no-padding" style="margin: 15px;">
+        <table class="table">
+            <tbody>
+
+                {% for movieCharacter in value %}
+
+                    {% set timeSum = timeSum + movieCharacter.timeOnScene %}
+
+                    <tr class="sonata-ba-view-container">
+                        <td rowspan="2" style="width: 5%">
+                            <span>{{ loop.index }}</span>
+                        </td>
+
+                        <!-- START
+                            fieldName:
+                            template: @SonataAdmin/CRUD/base_show_field.html.twig
+                            compiled template: @SonataAdmin/CRUD/base_show_field.html.twig
+                            -->
+
+                        <th>Character</th>
+                        <td>
+                            <a class="sonata-link-identifier" href="{{ path('admin_app_character_character_show', {'id': movieCharacter.character.id}) }}">
+                                {{ movieCharacter.character.roleName }}
+                            </a>
+                        </td>
+
+                        <th style="width: 13%">Time On Scene</th>
+                        <td style="width: 7%" rowspan="2"><span>{{ movieCharacter.timeOnScene }} min</span></td>
+
+                        <!-- END - fieldName:  -->
+                    </tr>
+                    <tr class="sonata-ba-view-container">
+
+                        <!-- START
+                            fieldName:
+                            template: @SonataAdmin/CRUD/show_datetime.html.twig
+                            compiled template: @SonataAdmin/CRUD/show_datetime.html.twig
+                            -->
+
+                        <th>Actor</th>
+                        <td>
+                            <a class="sonata-link-identifier" href="{{ path('admin_app_actor_actor_show', {'id': movieCharacter.character.actor.id}) }}">
+                                {{ movieCharacter.character.actor.name }} {{ movieCharacter.character.actor.surname }}
+                            </a>
+                        </td>
+                        <!-- END - fieldName:  -->
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <td></td>
+
+                    <th></th>
+
+                    <th id="total">Total:</th>
+                    <td>{{ timeSum }} min</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+{% endblock -%}

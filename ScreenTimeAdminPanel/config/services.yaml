@@ -22,3 +22,18 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    admin.actor:
+        class: App\Actor\Admin\ActorAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Actor\Entity\Actor, manager_type: orm, group: movie, label: 'Actor' }
+
+    admin.character:
+        class: App\Character\Admin\CharacterAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Character\Entity\Character, manager_type: orm, group: movie, label: 'Character' }
+
+    admin.movie:
+        class: App\Movie\Admin\MovieAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Movie\Entity\Movie, manager_type: orm, group: movie, label: 'Movie' }

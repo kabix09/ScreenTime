@@ -1,0 +1,13 @@
+{# source: https://stackoverflow.com/questions/64702772/sonata-admin-how-to-add-a-link-to-a-field #}
+{# pass var: https://stackoverflow.com/questions/22335310/how-to-pass-variables-to-sonata-admin-custom-list-action #}
+
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{%- block field_value %}
+    {% if value %}
+        {# var: value #}
+        <a href="{{ path('admin_app_actor_actor_show', {'id': object.actor.id}) }}">{{ object.actor.name }} {{ object.actor.surname }}</a>
+    {% else %}
+        -
+    {% endif %}
+{% endblock -%}
