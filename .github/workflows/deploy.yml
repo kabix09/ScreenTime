@@ -43,3 +43,6 @@ jobs:
       - name: Pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime && git pull origin admin-panel/docker -f"
         #"ssh -p ${{ secrets.SSH_PORT }}"
+        
+      - name: Update dependencies
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime && composer install"
