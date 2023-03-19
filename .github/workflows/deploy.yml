@@ -11,6 +11,7 @@ on:
     branches: [ "admin-panel/docker" ]
   pull_request:
     branches: [ "admin-panel/docker" ]
+    types: [submitted]
 
 jobs:
   build-and-deploy:
