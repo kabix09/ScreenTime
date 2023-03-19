@@ -45,4 +45,4 @@ jobs:
         #"ssh -p ${{ secrets.SSH_PORT }}"
         
       - name: Update dependencies
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime && composer install"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime/ScreenTimePanelAdmin && composer install"
