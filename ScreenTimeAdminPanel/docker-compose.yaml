@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mssql:
+    build:
+      context: ./docker/mssql
+      dockerfile: Dockerfile
+    container_name: mssql
+    volumes:
+     - ${SYMFONY_PROJECT_ROOT}/docker/mssql/backup:/var/opt/mssql   # share data to preserve them after removing or stopping container
+    restart: on-failure
+    ports:
+      - "1433:1433"
+    networks:
+      - symfony-network
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ${MSSQL_PASS}
+
+  php-8:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: ${TAG_PHP}
+        TIMEZONE: ${TIMEZONE}
+        PROJECT_NAME: ${SYMFONY_PROJECT_NAME}
+    container_name: php-8
+    restart: on-failure
+    environment:
+      APP_ENV: dev
+    volumes:
+      - ${SYMFONY_PROJECT_ROOT}:/var/www/${SYMFONY_PROJECT_NAME}
+    networks:
+      - symfony-network
+    depends_on:
+      - mssql
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: on-failure
+    ports:
+      - "8080:80"
+    environment:
+      PROJECT_NAME: ${SYMFONY_PROJECT_NAME}
+    volumes:
+      - ${SYMFONY_PROJECT_ROOT}:/var/www/${SYMFONY_PROJECT_NAME}
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - symfony-network
+    depends_on:
+      - php-8
+
+  redis-service:
+      image: redis
+      container_name: redis
+      ports:
+        - "6379:6379"
+      networks:
+        - symfony-network
+      command: >
+        --requirepass ${REDIS_PASS} 
+
+networks:
+  symfony-network:
+    driver: bridge
