@@ -28,17 +28,17 @@ jobs:
       - name: Adding Known Hosts
         run: ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
 
-      - name: Deploy with rsync
-        uses: burnett01/rsync-deployments@5.0
-        with:
-          switches: -avz
-          path: ./
-          remote_path: /home/user/ScreenTime/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_port: ${{ secrets.SSH_PORT }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+#       - name: Deploy with rsync
+#         uses: burnett01/rsync-deployments@5.0
+#         with:
+#           switches: -avz
+#           path: ./
+#           remote_path: /home/user/ScreenTime/
+#           remote_host: ${{ secrets.SSH_HOST }}
+#           remote_port: ${{ secrets.SSH_PORT }}
+#           remote_user: ${{ secrets.SSH_USER }}
+#           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
           
-#- name: Pull
-      #  run: ssh user@${{ secrets.SSH_HOST }} "git pull origin admin-panel/docker"
-      # "ssh -p ${{ secrets.SSH_PORT }}"
+      - name: Pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "git pull origin admin-panel/docker"
+        #"ssh -p ${{ secrets.SSH_PORT }}"
