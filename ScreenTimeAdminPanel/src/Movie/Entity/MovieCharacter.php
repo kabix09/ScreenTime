@@ -4,24 +4,39 @@ declare(strict_types=1);
 
 namespace App\Movie\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Character\Entity\Character;
 use App\Movie\Repository\MovieCharacterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: MovieCharacterRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'movie_character:item']),
+        new GetCollection(normalizationContext: ['groups' => 'movie_character:list'])
+    ],
+    paginationEnabled: false,
+)]
 class MovieCharacter
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'movieCharacters')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['movie_character:list', 'movie:item'])]
     private ?Movie $movie = null;
 
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'movieCharacters')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['movie_character:list', 'movie:item'])]
     private ?Character $character = null;
 
     #[ORM\Column]
+    #[Groups(['movie_character:list', 'movie:item'])]
     private ?int $timeOnScene = null;
 
     public function __construct(?Movie $movie=null, ?Character $character=null, int $timeOnScene = 0)

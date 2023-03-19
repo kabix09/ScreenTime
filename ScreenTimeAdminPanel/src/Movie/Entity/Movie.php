@@ -4,37 +4,55 @@ declare(strict_types=1);
 
 namespace App\Movie\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Movie\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ORM\UniqueConstraint(name: 'UQ_Movie_Signature', columns: ['title', 'production_year'])]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'movie:item']),
+        new GetCollection(normalizationContext: ['groups' => 'movie:list'])
+    ],
+    paginationEnabled: false,
+)]
 class Movie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['movie:list', 'movie:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['movie:list', 'movie:item'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['movie:list', 'movie:item'])]
     private ?\DateTimeInterface $productionYear = null;
 
     #[ORM\Column()]
+    #[Groups(['movie:list', 'movie:item'])]
     private ?int $durationTime = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['movie:list', 'movie:item'])]
     private ?\DateTimeInterface $worldPremiereDate = null;
 
     #[ORM\OneToMany(mappedBy: 'movie', targetEntity: MovieGenre::class)]
+    #[Groups(['movie:list', 'movie:item'])]
     private Collection $movieGenre;
 
     #[ORM\OneToMany(mappedBy: 'movie', targetEntity: MovieCharacter::class, cascade: ['persist'])]
+    #[Groups(['movie:list', 'movie:item'])]
     private Collection $movieCharacters;
 
     public function __construct()

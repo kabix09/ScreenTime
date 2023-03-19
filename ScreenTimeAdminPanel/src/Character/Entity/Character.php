@@ -2,30 +2,45 @@
 
 namespace App\Character\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Actor\Entity\Actor;
 use App\Character\Repository\CharacterRepository;
 use App\Movie\Entity\MovieCharacter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
 #[ORM\UniqueConstraint(name: 'UQ_Character_Signature', columns: ['role_name', 'actor_id'])]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'character:item']),
+        new GetCollection(normalizationContext: ['groups' => 'character:list'])
+    ],
+    paginationEnabled: false,
+)]
 class Character
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['character:list', 'character:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 55)]
+    #[Groups(['character:list', 'character:item'])]
     private ?string $roleName = null;
 
     #[ORM\ManyToOne(inversedBy: 'characters')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['character:list', 'character:item'])]
     private ?Actor $actor = null;
 
     #[ORM\OneToMany(mappedBy: 'character', targetEntity: MovieCharacter::class)]
+    #[Groups(['character:list', 'character:item'])]
     private Collection $movieCharacters;
 
     public function __construct()

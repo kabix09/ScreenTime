@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Actor\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model\Parameter;
 use App\Actor\Repository\ActorRepository;
 use App\Character\Entity\Character;
 use App\Country\Entity\Country;
@@ -11,29 +16,44 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
+#[ApiResource(
+        operations: [
+            new Get(normalizationContext: ['groups' => 'actor:item']),
+            new GetCollection(normalizationContext: ['groups' => 'actor:list']),
+            new Post(normalizationContext: ['groups' => 'actor:item:create']),
+        ],
+    paginationEnabled: false,
+)]
 class Actor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['actor:list', 'actor:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 55)]
+    #[Groups(['actor:list', 'actor:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 70)]
+    #[Groups(['actor:list', 'actor:item'])]
     private ?string $surname = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['actor:list', 'actor:item'])]
     private ?\DateTimeInterface $birthDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'actors')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['actor:list', 'actor:item'])]
     private ?Country $nationality = null;
 
     #[ORM\OneToMany(mappedBy: 'actor', targetEntity: Character::class)]
+    #[Groups(['actor:list', 'actor:item'])]
     private Collection $characters;
 
     public function __construct()

@@ -102,7 +102,9 @@ final class ActorAdmin extends AbstractAdmin
                     return Carbon::now()->diffInYears($actor->getBirthDate());
                 }
             ])
-            ->add('nationality.nicename')
+            ->add('nationality.nicename', FieldDescriptionInterface::TYPE_STRING, [
+                'label' => 'Nationality'
+            ])
             ->add(ListMapper::NAME_ACTIONS, ListMapper::TYPE_ACTIONS, [
                 'actions' => [
                     'show' => [],

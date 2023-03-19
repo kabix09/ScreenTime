@@ -4,40 +4,59 @@ declare(strict_types=1);
 
 namespace App\Country\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Actor\Entity\Actor;
 use App\Country\Repository\CountryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'country:item']),
+        new GetCollection(normalizationContext: ['groups' => 'country:list'])
+    ],
+    paginationEnabled: false,
+)]
 class Country
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['country:list', 'country:item'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['country:list', 'country:item'])]
     private ?string $iso = null;
 
     #[ORM\Column(length: 80)]
+    #[Groups(['country:list', 'country:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 80)]
+    #[Groups(['country:list', 'country:item'])]
     private ?string $nicename = null;
 
     #[ORM\Column(length: 3, nullable: true)]
+    #[Groups(['country:list', 'country:item'])]
     private ?string $iso3 = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['country:list', 'country:item'])]
     private ?int $numcode = null;
 
     #[ORM\Column]
+    #[Groups(['country:list', 'country:item'])]
     private ?int $phonecode = null;
 
     #[ORM\OneToMany(mappedBy: 'nationality', targetEntity: Actor::class)]
+    #[Groups(['country:list', 'country:item'])]
     private Collection $actors;
 
     public function __construct()
