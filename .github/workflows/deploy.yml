@@ -1,0 +1,48 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# Deploy files on my private Virtual Machine where docker is running
+name: Deploy on VM
+
+on:
+  push:
+    branches: [ "admin-panel/docker" ]
+  pull_request:
+    branches: [ "admin-panel/docker" ]
+    types: [submitted]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set repository
+        uses: actions/checkout@v2
+      
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
+
+#       - name: Deploy with rsync
+#         uses: burnett01/rsync-deployments@5.0
+#         with:
+#           switches: -avz
+#           path: ./
+#           remote_path: /home/user/ScreenTime/
+#           remote_host: ${{ secrets.SSH_HOST }}
+#           remote_port: ${{ secrets.SSH_PORT }}
+#           remote_user: ${{ secrets.SSH_USER }}
+#           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+      - name: Pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime && git pull origin admin-panel/docker -f"
+        #"ssh -p ${{ secrets.SSH_PORT }}"
+        
+      - name: Update dependencies
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime/ScreenTimeAdminPanel && composer install"
