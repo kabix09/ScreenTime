@@ -1,0 +1,36 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# Deploy files on my private Virtual Machine where docker is running
+name: Deploy on VM
+
+on:
+  push:
+    branches: [ "admin-panel/docker" ]
+  pull_request:
+    branches: [ "admin-panel/docker" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: debian-latest
+    steps:
+      - name: Set repository
+        uses: actions/checkout@v2
+      
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: unnecessary
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/user/ScreenTime/
+
+      #- name: Pull
+      #  run: ssh user@${{ secrets.SSH_HOST }} "git pull origin admin-panel/docker"
+      # "ssh -p ${{ secrets.SSH_PORT }}"
