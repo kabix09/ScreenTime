@@ -31,7 +31,7 @@ jobs:
       - name: Deploy with rsync
         uses: burnett01/rsync-deployments@5.2.1
         with:
-          switches: -avz -e "ssh -p ${{ secrets.SSH_PORT }}"
+          switches: -avz
           path: ./
           remote_path: /home/user/ScreenTime/
           remote_host: ${{ secrets.SSH_HOST }}
