@@ -41,5 +41,5 @@ jobs:
 #           remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
           
       - name: Pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime && git pull origin admin-panel/docker"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} "cd ./ScreenTime && git pull origin admin-panel/docker -f"
         #"ssh -p ${{ secrets.SSH_PORT }}"
