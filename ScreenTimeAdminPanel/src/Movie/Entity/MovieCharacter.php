@@ -7,16 +7,19 @@ namespace App\Movie\Entity;
 use App\Character\Entity\Character;
 use App\Movie\Repository\MovieCharacterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: MovieCharacterRepository::class)]
 class MovieCharacter
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'movieCharacters')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Movie $movie = null;
 
-    #[ORM\Id]
+    //#[ORM\Id] // EasyAdmin dont support composed keys
     #[ORM\ManyToOne(inversedBy: 'movieCharacters')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Character $character = null;

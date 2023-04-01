@@ -39,6 +39,19 @@ class CharacterRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Character[] Returns an array of Character objects
+     */
+    public function getCharactersUnassignedToAnyActor(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.actor IS NULL')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Character[] Returns an array of Character objects
 //     */

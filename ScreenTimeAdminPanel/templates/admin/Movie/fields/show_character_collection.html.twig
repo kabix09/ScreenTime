@@ -1,0 +1,71 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var fields \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% if ea.crud.currentAction == 'detail' %}
+    {% set timeSum = 0 %}
+
+    <div class="col-md-10 box-body table-responsive no-padding" style="margin: 15px;">
+        <table class="table">
+            <tbody>
+
+            {% for movieCharacter in field.value %}
+
+                {% set timeSum = timeSum + movieCharacter.timeOnScene %}
+
+                <tr class="">
+                    <td rowspan="2" style="width: 5%">
+                        <span>{{ loop.index }}</span>
+                    </td>
+
+                    <th>Character</th>
+                    <td>
+                        <a class="" href="{{ ea_url()
+                            .setController('App\\Character\\Controller\\CharacterCrudController')
+                            .setAction('detail')
+                            .setEntityId(movieCharacter.character.id)
+                        }}">
+                            {{ movieCharacter.character.roleName }}
+                        </a>
+                    </td>
+
+                    <th style="width: 13%">Time On Scene</th>
+                    <td style="width: 7%" rowspan="2"><span>{{ movieCharacter.timeOnScene }} min</span></td>
+
+                </tr>
+                <tr class="">
+
+                    <th>Actor</th>
+                    <td>
+                        <a class="" href="{{ ea_url()
+                            .setController('App\\Actor\\Controller\\CharacterCrudController')
+                            .setAction('detail')
+                            .setEntityId(movieCharacter.character.actor.id)
+                        }}">
+                            {{ movieCharacter.character.actor.name }} {{ movieCharacter.character.actor.surname }}
+                        </a>
+                    </td>
+
+                    <!-- empty tah to adjust underline -->
+                    <td></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+            <tfoot>
+            <tr>
+                <th></th>
+                <td></td>
+
+                <th></th>
+
+                <th id="total">Total:</th>
+                <td>{{ timeSum }} min</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+{% else %}
+    <span class="badge badge-secondary">{{ field.formattedValue }}</span>
+{% endif %}
