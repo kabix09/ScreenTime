@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Character\Entity;
 
@@ -12,6 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
 #[ORM\UniqueConstraint(name: 'UQ_Character_Signature', columns: ['role_name', 'actor_id'])]
@@ -24,6 +26,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Character
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -39,7 +43,7 @@ class Character
     #[Groups(['character:list', 'character:item'])]
     private ?Actor $actor = null;
 
-    #[ORM\OneToMany(mappedBy: 'character', targetEntity: MovieCharacter::class)]
+    #[ORM\OneToMany(mappedBy: 'character', targetEntity: MovieCharacter::class, cascade: ['persist'], orphanRemoval: true)]
     #[Groups(['character:list', 'character:item'])]
     private Collection $movieCharacters;
 
@@ -105,6 +109,19 @@ class Character
         }
 
         return $this;
+    }
+
+    public function getMovies(): array
+    {
+        // TODO clear this using array functions ! ! !
+        $movies = [];
+
+        foreach ($this->getMovieCharacters() as $movieCharacter)
+        {
+            $movies[] = $movieCharacter;
+        }
+
+        return array_unique($movies);
     }
 
     public function __toString(): string

@@ -1,8 +1,7 @@
 <?php
-
 declare(strict_types=1);
 
-namespace App\Character\Form;
+namespace App\Share\Form\Type;
 
 use App\Movie\Entity\Movie;
 use App\Movie\Entity\MovieCharacter;

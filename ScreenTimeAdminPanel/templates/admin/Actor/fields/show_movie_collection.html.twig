@@ -1,0 +1,67 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var fields \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% if ea.crud.currentAction == 'detail' %}
+    {% set timeSum = 0 %}
+
+    <div class="col-md box-body table-responsive no-padding" style="margin: 15px;">
+        <table class="table">
+            <thead>
+                <th>Index</th>
+                <th>Movie</th>
+                <th>Character</th>
+                <th style="width: 25%">Time on scene</th>
+            </thead>
+            <tbody>
+
+            {% for movieCharacterBucket in field.value %}
+
+                {% set timeSum = timeSum + movieCharacterBucket.timeOnScene %}
+
+                {% set movie = movieCharacterBucket.movie %}
+
+                <tr class="sonata-ba-view-container">
+                    <td style="width: 5%">
+                        <span>{{ loop.index }}</span>
+                    </td>
+
+                    <td>
+                        <span>
+                            <a class="" href="{{ ea_url()
+                                .setController('App\\Movie\\Controller\\MovieCrudController')
+                                .setAction('detail')
+                                .setEntityId(movie.id)
+                            }}">
+                                {{ movie.title }} ({{ movie.productionYear|date('Y') }})
+                            </a>
+                        </span>
+                    </td>
+
+                    <td>
+                        <a class="" href="{{ ea_url()
+                            .setController('App\\Character\\Controller\\CharacterCrudController')
+                            .setAction('detail')
+                            .setEntityId(movieCharacterBucket.character.id)
+                        }}">
+                            {{ movieCharacterBucket.character.roleName }}
+                        </a>
+                    </td>
+
+                    <td>
+                        {{ movieCharacterBucket.timeOnScene }} min
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th id="total" colspan="3">Total:</th>
+                <td>{{ timeSum }} min</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+{% else %}
+    <span class="badge badge-secondary">{{ field.formattedValue }}</span>
+{% endif %}

@@ -1,0 +1,34 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var fields \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% if ea.crud.currentAction == 'detail' %}
+    <div class="col-md-10 box-body table-responsive no-padding" style="margin: 15px;">
+        <table class="table">
+            <tbody>
+            {% for character in field.value %}
+                <tr class="">
+                    <td style="width: 5%">
+                        <span>{{ loop.index }}</span>
+                    </td>
+
+                    <td>
+                    <span>
+                        <a class="" href="{{ ea_url()
+                            .setController('App\\Character\\Controller\\CharacterCrudController')
+                            .setAction('detail')
+                            .setEntityId(character.id)
+                        }}">
+                            {{ character.roleName }}
+                        </a>
+                    </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% else %}
+    <span class="badge badge-secondary">{{ field.formattedValue }}</span>
+{% endif %}

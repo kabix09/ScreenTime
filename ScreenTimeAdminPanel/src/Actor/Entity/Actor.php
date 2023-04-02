@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Actor\Entity;
@@ -17,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ActorRepository::class)]
 #[ApiResource(
@@ -29,6 +29,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Actor
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -52,7 +54,7 @@ class Actor
     #[Groups(['actor:list', 'actor:item'])]
     private ?Country $nationality = null;
 
-    #[ORM\OneToMany(mappedBy: 'actor', targetEntity: Character::class)]
+    #[ORM\OneToMany(mappedBy: 'actor', targetEntity: Character::class, cascade: ['persist'])]
     #[Groups(['actor:list', 'actor:item'])]
     private Collection $characters;
 
@@ -102,6 +104,11 @@ class Actor
         return $this;
     }
 
+    public function getAge(): int
+    {
+        return (int)(new \DateTime('now'))->diff($this->getBirthDate())->format('%y%');
+    }
+
     public function getNationality(): ?Country
     {
         return $this->nationality;
@@ -142,6 +149,27 @@ class Actor
         }
 
         return $this;
+    }
+
+    public function getCharactersAmount(): int
+    {
+        return $this->characters->count();
+    }
+
+    public function getMovies(): array
+    {
+        // TODO clear this using array functions ! ! !
+        $movies = [];
+
+        foreach ($this->getCharacters() as $character)
+        {
+            foreach ($character->getMovieCharacters() as $movieCharacter)
+            {
+                $movies[] = $movieCharacter;
+            }
+        }
+
+        return array_unique($movies);
     }
 
     public function __toString(): string

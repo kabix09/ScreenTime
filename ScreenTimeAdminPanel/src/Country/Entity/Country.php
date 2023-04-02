@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Country\Entity;
@@ -169,5 +168,10 @@ class Country
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s', $this->getNicename());
     }
 }

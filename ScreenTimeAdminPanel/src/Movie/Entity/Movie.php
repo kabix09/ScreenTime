@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Movie\Entity;
@@ -13,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
 #[ORM\UniqueConstraint(name: 'UQ_Movie_Signature', columns: ['title', 'production_year'])]
@@ -25,6 +25,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Movie
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -172,6 +174,11 @@ class Movie
         }
 
         return $this;
+    }
+
+    public function getCharactersAmount(): int
+    {
+        return $this->movieCharacters->count();
     }
 
     public function __toString(): string

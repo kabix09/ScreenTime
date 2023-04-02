@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Movie\Entity;
@@ -11,7 +10,7 @@ use App\Character\Entity\Character;
 use App\Movie\Repository\MovieCharacterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: MovieCharacterRepository::class)]
 #[ApiResource(
@@ -23,13 +22,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class MovieCharacter
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'movieCharacters')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['movie_character:list', 'movie:item'])]
     private ?Movie $movie = null;
 
-    #[ORM\Id]
+    //#[ORM\Id] // EasyAdmin dont support composed keys
     #[ORM\ManyToOne(inversedBy: 'movieCharacters')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['movie_character:list', 'movie:item'])]

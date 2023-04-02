@@ -18,7 +18,7 @@ Screen Time admin panel is a [CMS Panel](https://en.wikipedia.org/wiki/Content_m
 ## Technologies
 - [php 8.1](https://www.php.net/releases/8.1/en.php)
 - [Symfony 6](https://symfony.com/doc/6.0/index.html)
-- [Sonata](https://symfony.com/bundles/SonataAdminBundle/current/index.html) <!-- change for- [Easy Admin 4]() -->
+- [Easy Admin 5](https://symfony.com/bundles/EasyAdminBundle/current/index.html)
 - [MsSQL](https://www.microsoft.com/pl-pl/sql-server/sql-server-downloads)
 
 
